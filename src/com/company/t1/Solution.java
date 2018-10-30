@@ -24,6 +24,7 @@ package com.company.t1;
  *
  * @author shijie.xu
  * @since 2018年10月30日
+ * @solusion https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solution/
  */
 public class Solution {
     public static int maxProfit(int[] prices, int fee) {
