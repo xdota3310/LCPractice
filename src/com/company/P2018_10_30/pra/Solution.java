@@ -1,4 +1,4 @@
-package com.company.t1;
+package com.company.P2018_10_30.pra;
 
 /**
  * Your are given an array of integers prices, for which the i-th element is the price of a given stock on day i;
