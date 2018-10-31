@@ -1,4 +1,4 @@
-package com.company.P2018_10_30.notes.finally关键字学习;
+package com.company.P2018_10_30.notes.finallyLearning;
 
 /**
  * 请填写类注释
