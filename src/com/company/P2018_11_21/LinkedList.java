@@ -9,6 +9,9 @@ package com.company.P2018_11_21;
  *
  * @author shijie.xu
  * @since 2018年11月21日
+ *
+ * 警惕指针丢失、内存泄漏、利用哨兵简化实现难度、重点留意边界条件处理，以及举例画图、辅助思考，还有多写多练
+ * 
  */
 public class LinkedList {
 }
