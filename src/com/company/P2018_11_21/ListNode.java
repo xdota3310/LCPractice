@@ -10,8 +10,8 @@ public class ListNode {
     int data;
     ListNode next;
 
-    public ListNode() {
-        this.data = -1;
+    public ListNode(int x) {
+        this.data = x;
         this.next = null;
     }
 }

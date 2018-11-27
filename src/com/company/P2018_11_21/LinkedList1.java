@@ -1,7 +1,5 @@
 package com.company.P2018_11_21;
 
-import java.util.Date;
-
 /**
  * 1.单链表反转
  * 2.链表中环的检测
@@ -18,61 +16,71 @@ import java.util.Date;
  */
 public class LinkedList1 {
 
-    public static ListNode re1(ListNode list) {
+    public static ListNode re1(ListNode head) {
         int flag = 1;
         ListNode p;
         ListNode q;
-        ListNode head = new ListNode();
-        ListNode temList = list;
+        ListNode head1 = new ListNode(-1);
 
-        while(temList.next != null) {
-            p = temList;
-            q = temList.next;
+        while(head != null && head.next != null) {
+            p = head;
+            q = head.next;
             while(q.next != null) {
                 p = q;
                 q = q.next;
             }
             if(flag == 1) {
-                head.next = q;
+                head1 = q;
             }
             p.next = null;
-            if(p != temList) {
-                q.next = p;
-            } else {
-                return head;
-            }
+
+            q.next = p;
+
             flag++;
         }
-        return head;
+        if(flag==1) {
+            return head;
+        } else {
+            return head1;
+        }
     }
 
-    public static ListNode re2(ListNode list) {
-        ListNode head = null;
-        ListNode temList = list;
+    public static ListNode re2(ListNode head) {
+        ListNode head1 = null;
+        ListNode temList = head;
 
-        if(temList.next != null) {
-            ListNode p = new ListNode();
-            p.data = temList.next.data;
+        if(temList != null) {
+            ListNode p = new ListNode(-1);
+            p.data = temList.data;
             p.next = null;
-            head = p;
+            head1 = p;
             temList = temList.next;
         }
-        while(temList.next != null) {
-            ListNode q = new ListNode();
-            q.data = temList.next.data;
-            q.next = head;
-            head = q;
+        while(temList!= null) {
+            ListNode q = new ListNode(-1);
+            q.data = temList.data;
+            q.next = head1;
+            head1 = q;
             temList = temList.next;
         }
-        ListNode headNode = new ListNode();
-        headNode.next = head;
-        head = headNode;
-        return head;
+        return head1;
+    }
+
+    public static ListNode re3(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        while (curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        return prev;
     }
 
     public static void print(ListNode head) {
-        while(head != null && head.next != null) {
-            System.out.print(head.next.data+" ");
+        while(head != null ) {
+            System.out.print(head.data + " ");
             head = head.next;
         }
         System.out.println("");
@@ -80,20 +88,28 @@ public class LinkedList1 {
     }
 
     public static void main(String[] args) {
-        ListNode head11 = new ListNode();
-        ListNode p = head11;
+        ListNode head11 = new ListNode(-1);
+        ListNode p = new ListNode(-1);
         for(int i = 0; i < 10; i++) {
-            ListNode newNode = new ListNode();
+            ListNode newNode = new ListNode(-1);
             newNode.data = i;
+            if(i == 0) {
+                head11=newNode;
+                p = newNode;
+                p.next = null;
+            }
             p.next = newNode;
-            p = p.next;
-            p.next = null;
+            p=p.next;
+            p.next=null;
+
         }
         print(head11);
 
-        print(re2(head11));
-        print(re1(head11));
 //        print(re2(head11));
+
+//        print(re1(head11));
+//        print(re2(head11));
+        print(re3(head11));
 
 
     }
