@@ -14,4 +14,15 @@ public class ListNode {
         this.data = x;
         this.next = null;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder re = new StringBuilder();
+        re.append("ListNode{");
+        while(this.next!=null){
+            re.append("data="+this.data);
+            next=next.next;
+        }
+        return re.toString();
+    }
 }

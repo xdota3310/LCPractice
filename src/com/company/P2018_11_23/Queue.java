@@ -13,4 +13,31 @@ package com.company.P2018_11_23;
  * 当出队时，size—，入队时size++
  */
 public class Queue {
+    int size;
+    int[] ret = new int[size];
+    int head = 0;
+    int tail = 0;
+
+    public Queue(int size) {
+        this.size = size;
+    }
+
+    public boolean input(int data) {
+        if((tail + 1) % size == head) {
+            return false;
+        }
+        ret[tail] = data;
+        tail = (tail + 1) % size;
+        return true;
+    }
+
+    public int output() {
+        if(head == tail) {
+            return -1;
+        }
+        int result = ret[head];
+        head=(head+1)%size;
+        return result;
+    }
+
 }
