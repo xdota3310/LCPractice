@@ -11,4 +11,50 @@ package com.company.P2018_11_23;
  */
 public class Sort1 {
 
+    //    stable
+    public static void dubble(int a[]) {
+        int n = a.length;
+        int temp = -1;
+        if(n <= 0) {
+            return;
+        }
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n - 1 - i; j++) {
+                if(a[j] > a[j + 1]) {
+                    temp = a[j];
+                    a[j] = a[j + 1];
+                    a[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public static void select(int a[]) {
+
+    }
+
+    public static int seleMin(int a[]) {
+        int min = 999999999;
+        int index = -1;
+        int n = a.length;
+        for(int i = 0; i < n; i++) {
+            if(a[i] < min) {
+                min = a[i];
+                index = i;
+            }
+        }
+        for(int i = index; i <n-index;i++){
+            a[i]=a[i+1];
+
+        }
+            return min;
+    }
+
+    public static void main(String[] args) {
+        int a[] = {4, 6, 2, 53, 43, 2, 354, 34637, 1, 2, 34, 436, 567, 8, 8, 789};
+        dubble(a);
+        seleMin(a);
+        System.out.println(a.toString());
+    }
+
 }
