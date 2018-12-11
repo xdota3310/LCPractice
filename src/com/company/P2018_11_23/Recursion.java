@@ -13,5 +13,39 @@ package com.company.P2018_11_23;
  * @since 2018年11月23日
  */
 public class Recursion {
+    public static int rec1(int n){
+        if(n==1){
+            return 1;
+
+        }
+        if(n<=0){
+            return 1;
+        }
+        return rec1(n-1)+rec1(n-2);
+    }
+
+    public static int rec2(int n){
+        int a=1;
+        int b=1;
+        int c=0;
+        if(n==0){
+            return a;
+        }
+        if(n==1){
+            return b;
+        }
+        for(int i=1;i<n;i++){
+            c=a+b;
+            a=b;
+            b=c;
+        }
+        return c;
+    }
+
+    public static void main(String[] args) {
+        int n=10;
+        System.out.println(rec1(n));
+        System.out.println(rec2(n));
+    }
 
 }
