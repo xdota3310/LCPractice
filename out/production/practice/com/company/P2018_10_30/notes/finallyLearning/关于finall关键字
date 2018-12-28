@@ -1,0 +1,22 @@
+eg:
+public class Test {
+public static void main(String[] args) {
+       System.out.println("return value of getValue(): " + getValue());
+ }
+public static int getValue() {
+       int i = 1;
+       try {
+                return i;
+       } finally {
+                i++;
+       }
+ }
+}
+
+return value of getValue(): 1
+
+exp:
+Java 虚拟机会把 finally 语句块作为 subroutine（对于这个 subroutine 不知该如何翻译为好，干脆就不翻译了，免得产生歧义和误解。）
+直接插入到 try 语句块或者 catch 语句块的控制转移语句之前。但是，还有另外一个不可忽视的因素，那就是在执行 subroutine（也就是 finally 语句块）之前，
+try 或者 catch 语句块会保留其返回值到本地变量表（Local Variable Table）中。待 subroutine 执行完毕之后，再恢复保留的返回值到操作数栈中，
+然后通过 return 或者 throw 语句将其返回给该方法的调用者（invoker）。
