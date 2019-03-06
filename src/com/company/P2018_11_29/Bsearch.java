@@ -7,5 +7,7 @@ package com.company.P2018_11_29;
  * @since 2018年11月29日
  */
 public class Bsearch {
+    public static int lowerBound(int[] nums, int target) {
 
+    }
 }
