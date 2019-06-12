@@ -42,7 +42,7 @@ public class test {
 
     public static void main(String[] args) {
         String[] source = {"struct Node{", "    /*/ declare members;/**/", "    int size;", "    /**/int val;", "};"};
-//        String[] source = {"/*Test program */", "int main()", "{ ", "  // variable declaration ", "int a, b, c;", "/* This is a test", "   " + "multiline  ", "   comment for ", "   testing */", "a = b + c;", "}"};
+//        String[] source = {"/*Test program */", "int main()", "{ ", "  // variable declaration ", "int a, b, c;", "/* This is a April", "   " + "multiline  ", "   comment for ", "   testing */", "a = b + c;", "}"};
         System.out.println(new test().removeComments(source));
     }
 }

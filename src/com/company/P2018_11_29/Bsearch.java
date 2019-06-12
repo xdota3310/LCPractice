@@ -8,6 +8,6 @@ package com.company.P2018_11_29;
  */
 public class Bsearch {
     public static int lowerBound(int[] nums, int target) {
-
+        return 0;
     }
 }

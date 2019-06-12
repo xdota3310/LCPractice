@@ -38,7 +38,7 @@ public class LinkedList1 {
 
             flag++;
         }
-        if(flag==1) {
+        if(flag == 1) {
             return head;
         } else {
             return head1;
@@ -56,7 +56,7 @@ public class LinkedList1 {
             head1 = p;
             temList = temList.next;
         }
-        while(temList!= null) {
+        while(temList != null) {
             ListNode q = new ListNode(-1);
             q.data = temList.data;
             q.next = head1;
@@ -69,7 +69,7 @@ public class LinkedList1 {
     public static ListNode re3(ListNode head) {
         ListNode prev = null;
         ListNode curr = head;
-        while (curr != null) {
+        while(curr != null) {
             ListNode nextTemp = curr.next;
             curr.next = prev;
             prev = curr;
@@ -79,7 +79,7 @@ public class LinkedList1 {
     }
 
     public static void print(ListNode head) {
-        while(head != null ) {
+        while(head != null) {
             System.out.print(head.data + " ");
             head = head.next;
         }
@@ -94,13 +94,13 @@ public class LinkedList1 {
             ListNode newNode = new ListNode(-1);
             newNode.data = i;
             if(i == 0) {
-                head11=newNode;
+                head11 = newNode;
                 p = newNode;
                 p.next = null;
             }
             p.next = newNode;
-            p=p.next;
-            p.next=null;
+            p = p.next;
+            p.next = null;
 
         }
         print(head11);
