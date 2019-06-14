@@ -19,6 +19,7 @@ public class Sort1 {
      * 冒泡排序
      * 原地、稳定
      * 时间O(n^2) 空间O(1)
+     *
      * @param a
      */
     public static void dubble(int a[]) {
@@ -77,6 +78,7 @@ public class Sort1 {
      * 插入排序
      * 稳定、原地
      * 时间O(n^2)、空间O(1)
+     *
      * @param a
      */
     public static void insertionSort2(int[] a) {
@@ -106,7 +108,8 @@ public class Sort1 {
     /**
      * 希尔排序
      * 不稳定、原地
-     * 时间平均O(n(logn)^2)
+     * 时间平均O(n(logn)^2) 空间O(1)
+     *
      * @param array
      */
     public static void shellSort(int[] array) {
@@ -158,12 +161,44 @@ public class Sort1 {
 
     /**
      * 归并排序
-     *稳、非原地
+     * 稳、非原地
      * 时间O(nlogn)、空间O(n)
+     *
      * @param a
      */
     public static void mergeSort(@NotNull int[] a) {
+        Long start = System.currentTimeMillis();
         int length = a.length;
+        int[] res = new int[length];
+        recursiveMergeSort(a, res, 0, length-1);
+        Long end = System.currentTimeMillis();
+        System.out.println("{mergeSort:" + (end - start) + "}");
+        print(a);
+
+    }
+
+    private static void recursiveMergeSort(int[] a, int[] res, int start, int end) {
+        if(start >= end) {
+            return;
+        }
+        int mid = ((end - start) >> 1) + start;
+        int start1 = start, end1 = mid;
+        int start2 = mid + 1, end2 = end;
+        recursiveMergeSort(a, res, start1, end1);
+        recursiveMergeSort(a, res, start2, end2);
+        int k = start;
+        while(start1 <= end1 && start2 <= end2) {
+            res[k++] = a[start1] < a[start2] ? a[start1++] : a[start2++];
+        }
+        while(start1 <= end1) {
+            res[k++] = a[start1++];
+        }
+        while(start2 <= end2) {
+            res[k++] = a[start2++];
+        }
+        for(int i = start; i < k; i++) {
+            a[i] = res[i];
+        }
 
     }
 
@@ -203,7 +238,7 @@ public class Sort1 {
         insertionSort(b);
         insertionSort2(c);
         shellSort(d);
-
+        mergeSort(e);
     }
 
 }
