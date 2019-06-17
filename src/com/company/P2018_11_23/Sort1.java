@@ -46,7 +46,7 @@ public class Sort1 {
     public static void insertionSort(int[] a) {
         Long start = System.currentTimeMillis();
         int n = a.length;
-        if(n <= 1 || a.length != n) {
+        if(n <= 1) {
             return;
         }
         for(int i = 1; i < n; i++) {
@@ -153,10 +153,76 @@ public class Sort1 {
     }
 
     /**
+     * 快速排序
+     * 时间O(nlogn) 空间O(1)
+     *
      * @param a
      */
     public static void quickSort(int[] a) {
+        Long start = System.currentTimeMillis();
         int length = a.length;
+//        qSort(a, 0, length - 1);
+        recursiveQuickSort(a, 0, length - 1);
+        Long end = System.currentTimeMillis();
+        System.out.println("{quickSort:" + (end - start) + "}");
+        print(a);
+    }
+
+    private static void recursiveQuickSort(int[] a, int p, int r) {
+        if(p >= r) {
+            return;
+        }
+        int pivot = a[(p + r) >> 1];
+        int i = p, j = r;
+        while(i <= j) {
+            while(a[i] < pivot) {
+                ++i;
+            }
+            while(a[j] > pivot) {
+                --j;
+            }
+            if(i < j) {
+                int temp = a[j];
+                a[j] = a[i];
+                a[i] = temp;
+                ++i;
+                --j;
+            } else if(i == j) {
+                ++i;
+            }
+        }
+
+        recursiveQuickSort(a, p, j);
+        recursiveQuickSort(a, i, r);
+
+
+    }
+
+
+    private static void qSort(int[] arr, int head, int tail) {
+        if(head >= tail || arr == null || arr.length <= 1) {
+            return;
+        }
+        int i = head, j = tail, pivot = arr[(head + tail) / 2];
+        while(i <= j) {
+            while(arr[i] < pivot) {
+                ++i;
+            }
+            while(arr[j] > pivot) {
+                --j;
+            }
+            if(i < j) {
+                int t = arr[i];
+                arr[i] = arr[j];
+                arr[j] = t;
+                ++i;
+                --j;
+            } else if(i == j) {
+                ++i;
+            }
+        }
+        qSort(arr, head, j);
+        qSort(arr, i, tail);
     }
 
     /**
@@ -170,7 +236,7 @@ public class Sort1 {
         Long start = System.currentTimeMillis();
         int length = a.length;
         int[] res = new int[length];
-        recursiveMergeSort(a, res, 0, length-1);
+        recursiveMergeSort(a, res, 0, length - 1);
         Long end = System.currentTimeMillis();
         System.out.println("{mergeSort:" + (end - start) + "}");
         print(a);
@@ -188,7 +254,7 @@ public class Sort1 {
         recursiveMergeSort(a, res, start2, end2);
         int k = start;
         while(start1 <= end1 && start2 <= end2) {
-            res[k++] = a[start1] < a[start2] ? a[start1++] : a[start2++];
+            res[k++] = a[start1] <= a[start2] ? a[start1++] : a[start2++];
         }
         while(start1 <= end1) {
             res[k++] = a[start1++];
@@ -239,6 +305,7 @@ public class Sort1 {
         insertionSort2(c);
         shellSort(d);
         mergeSort(e);
+        quickSort(f);
     }
 
 }
