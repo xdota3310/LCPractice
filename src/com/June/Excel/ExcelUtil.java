@@ -1,15 +1,14 @@
-package com.June.Excel;
+package com.ucar.pms.util;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -30,6 +29,7 @@ import java.util.List;
  * @since 2019年06月18日
  */
 public class ExcelUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelUtil.class);
 
     /**
      * 2007+ 版本的excel
@@ -48,11 +48,20 @@ public class ExcelUtil {
 
     private List<String> head = new ArrayList<>();
 
-    private List<Object> resList = new ArrayList<>();
+    private Object object;
+
+
+    /**
+     * 标识next的索引
+     */
+    private int index = 1;
 
     private int coloumNum;
 
-    private int rowNum;
+    /**
+     * 最后一行的索引
+     */
+    private int rowNum = 0;
 
     private void initWorkbook(MultipartFile file) throws Exception {
         this.workbook = chooseWorkbook(file);
@@ -63,42 +72,80 @@ public class ExcelUtil {
 
     }
 
-    private void initHead() {
-        if(this.sheet != null) {
+    /**
+     * 初始化
+     *
+     * @param file
+     * @param sheetName
+     * @throws Exception
+     */
+    public void init(MultipartFile file, String sheetName, Object obj) throws Exception {
+        initWorkbook(file);
+        initSheet(sheetName);
+        object = obj;
+        if(this.sheet != null && head.size() <= 0) {
             Row row = sheet.getRow(0);
-//            for(int i = row.getFirstCellNum(); i <= row.getPhysicalNumberOfCells(); i++) {
             int i = 0;
             while(row.getCell(i) != null && !"".equals(row.getCell(i).toString().trim())) {
                 head.add(row.getCell(i).toString().trim());
                 ++i;
             }
-//            }
+            rowNum = sheet.getLastRowNum();
         }
+
     }
 
+    /**
+     * 全量转换
+     *
+     * @param file
+     * @param sheetName
+     * @param obj
+     * @return
+     * @throws Exception
+     */
+    @Deprecated
     public List<Object> doImport(MultipartFile file, String sheetName, Object obj) throws Exception {
-        initWorkbook(file);
-        initSheet(sheetName);
-        initHead();
-        return resList;
+//        init(file, sheetName);
+
+        return null;
     }
 
-    public List<Object> doImport(MultipartFile file, String sheetName, Object obj, int start, int size) throws Exception {
-        int end;
+    public boolean hasNext() {
+        if(index <= rowNum) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 分批转换(需要先调用getTotal方法)
+     *
+     * @param size
+     * @return
+     * @throws Exception
+     */
+    public List<Object> next(int size) throws Exception {
+        List<Object> resList = new ArrayList<>();
         if(size <= 0) {
             return resList;
         }
-        end = start + size - 1;
-        start = (start > 1) ? start : 1;
-        initHead();
-        resList = this.importBaseExcel(obj, start, end);
+        int end = index + size - 1;
+        resList = this.importBaseExcel(object, index, ((end <= rowNum) ? end : rowNum));
+        index = index + size;
         return resList;
     }
 
-    public int getTotal(MultipartFile file, String sheetName) throws Exception {
-        initWorkbook(file);
-        initSheet(sheetName);
-//        Row row = sheet.getRow(0);
+    /**
+     * 获取表单的行数
+     *
+     * @param file
+     * @param sheetName
+     * @return
+     * @throws Exception
+     */
+    public int getTotal(MultipartFile file, String sheetName, Object obj) throws Exception {
+        init(file, sheetName, obj);
         return sheet.getLastRowNum() + 1;
     }
 
@@ -109,7 +156,7 @@ public class ExcelUtil {
      * @return
      * @throws Exception
      */
-    public Field[] findEntityAllTypeName(Object obj) throws Exception {
+    private java.lang.reflect.Field[] findEntityAllTypeName(Object obj) throws Exception {
 
         Class<? extends Object> cls = obj.getClass();
 
@@ -122,7 +169,7 @@ public class ExcelUtil {
      * @return
      * @throws Exception
      */
-    public Workbook chooseWorkbook(MultipartFile file) throws Exception {
+    private Workbook chooseWorkbook(MultipartFile file) throws Exception {
 
         Workbook workbook = null;
 
@@ -155,24 +202,26 @@ public class ExcelUtil {
      * @throws IOException
      */
     private List<Object> importBaseExcel(Object obj, int start, int end) throws IOException {
-        try {
-            //获取该实体所有定义的属性 返回Field数组
-            Field[] entityName = this.findEntityAllTypeName(obj);
-//            String classname = obj.getClass().getName();
-            Class<?> clazz = obj.getClass();
+        List<Object> list = new ArrayList<Object>();
+        Field field;
+        Cell pname = null;
+        String value = null;
+        Class<?> clazz = obj.getClass();
 
-            List<Object> list = new ArrayList<Object>();
-
-            //循环插入数据
-            for(int i = start; i <= end; i++) {
-
-                Row row = sheet.getRow(i);
-
-                //可以根据该类名生成Java对象
-                Object pojo = clazz.newInstance();
-                for(int j = 0; j < head.size(); j++) {
-                    String value = head.get(j);
-                    Field field = null;
+        //循环插入数据
+        for(int i = start; i <= end; i++) {
+            Object pojo = null;
+            Row row = null;
+            try {
+                row = sheet.getRow(i);
+                pojo = clazz.newInstance();
+            } catch (Exception e) {
+                LOGGER.error("ExcelUtil:" + e.toString());
+            }
+            for(int j = 0; j < head.size(); j++) {
+                try {
+                    value = head.get(j);
+                    field = null;
                     Class tempClass = clazz;
                     while(tempClass != null && field == null) {
                         field = getField(tempClass, value);
@@ -182,7 +231,7 @@ public class ExcelUtil {
                     field.setAccessible(true);
                     String type = field.getGenericType().toString();
 
-                    Cell pname = row.getCell(j);
+                    pname = row.getCell(j);
                     switch(type) {
                         case "char":
                         case "java.lang.Character":
@@ -191,10 +240,15 @@ public class ExcelUtil {
                             break;
                         case "int":
                         case "class java.lang.Integer":
-                            field.set(pojo, Integer.valueOf(getVal(pname)));
+                            if(pname != null) {
+                                field.set(pojo, Integer.valueOf(getVal(pname)));
+                            }
                             break;
                         case "class java.util.Date":
-                            field.set(pojo, dateFormat.format(pname.toString()));
+                            if(pname != null) {
+                                pname.setCellType(CellType.NUMERIC);
+                                field.set(pojo, pname.getDateCellValue());
+                            }
                             break;
                         case "float":
                         case "double":
@@ -208,17 +262,13 @@ public class ExcelUtil {
                         default:
                             break;
                     }
+                } catch (Exception e) {
+                    LOGGER.error("ExcelUtil:【" + (i + 1) + "行】【" + (j + 1) + "列】【" + value + "】 " + e.toString());
                 }
-
-                list.add(pojo);
             }
-            return list;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-//            workbook.close();
+            list.add(pojo);
         }
-        return null;
+        return list;
     }
 
     private Field getField(Class<?> cla, String name) {
@@ -248,13 +298,13 @@ public class ExcelUtil {
                     String val = cell.getNumericCellValue() + "";
                     int index = val.indexOf(".");
 
-                    if(Integer.valueOf(val.substring(index + 1)) == 0) {
-                        //处理科学计数法
-                        DecimalFormat df = new DecimalFormat("0");
-                        return df.format(cell.getNumericCellValue());
-                    }
-                    //double
-                    return cell.getNumericCellValue() + "";
+//                    if(Integer.valueOf(val.substring(index + 1)) == 0) {
+                    //处理科学计数法
+                    DecimalFormat df = new DecimalFormat("0");
+                    return df.format(cell.getNumericCellValue());
+//                    }
+                //double
+//                    return cell.getNumericCellValue() + "";
                 // 字符串
                 case XSSFCell.CELL_TYPE_STRING:
                     return cell.getStringCellValue() + "";
