@@ -199,31 +199,31 @@ public class Sort1 {
     }
 
 
-    private static void qSort(int[] arr, int head, int tail) {
-        if(head >= tail || arr == null || arr.length <= 1) {
-            return;
-        }
-        int i = head, j = tail, pivot = arr[(head + tail) / 2];
-        while(i <= j) {
-            while(arr[i] < pivot) {
-                ++i;
-            }
-            while(arr[j] > pivot) {
-                --j;
-            }
-            if(i < j) {
-                int t = arr[i];
-                arr[i] = arr[j];
-                arr[j] = t;
-                ++i;
-                --j;
-            } else if(i == j) {
-                ++i;
-            }
-        }
-        qSort(arr, head, j);
-        qSort(arr, i, tail);
-    }
+//    private static void qSort(int[] arr, int head, int tail) {
+//        if(head >= tail || arr == null || arr.length <= 1) {
+//            return;
+//        }
+//        int i = head, j = tail, pivot = arr[(head + tail) / 2];
+//        while(i <= j) {
+//            while(arr[i] < pivot) {
+//                ++i;
+//            }
+//            while(arr[j] > pivot) {
+//                --j;
+//            }
+//            if(i < j) {
+//                int t = arr[i];
+//                arr[i] = arr[j];
+//                arr[j] = t;
+//                ++i;
+//                --j;
+//            } else if(i == j) {
+//                ++i;
+//            }
+//        }
+//        qSort(arr, head, j);
+//        qSort(arr, i, tail);
+//    }
 
     /**
      * 归并排序
@@ -269,8 +269,9 @@ public class Sort1 {
     }
 
     private static void heapSort(int[] arr) {
+        Long start = System.currentTimeMillis();
         // 将待排序的序列构建成一个大顶堆
-        for (int i = arr.length / 2; i >= 0; i--){
+        for (int i = 0; i >= 0; i--){
             heapAdjust(arr, i, arr.length);
         }
 
@@ -281,6 +282,8 @@ public class Sort1 {
             // 交换之后，需要重新检查堆是否符合大顶堆，不符合则要调整
             heapAdjust(arr, 0, i);
         }
+        Long end = System.currentTimeMillis();
+        System.out.println("{heapSort:" + (end - start) + "}");
     }
 
     /**
@@ -351,28 +354,31 @@ public class Sort1 {
     }
 
     public static void main(String[] args) {
-        int[] a = {4, 6, 2, 53, 43, 2, 354, 34637, 1, 2, 34, 436, 567, 8, 8, 789};
-//        int[] t = getArray(100000);
-//        int[] a = new int[100000];
-//        int[] b = new int[100000];
-//        int[] c = new int[100000];
-//        int[] d = new int[100000];
-//        int[] e = new int[100000];
-//        int[] f = new int[100000];
-//        System.arraycopy(t, 0, a, 0, t.length);
-//        System.arraycopy(t, 0, b, 0, t.length);
-//        System.arraycopy(t, 0, c, 0, t.length);
-//        System.arraycopy(t, 0, d, 0, t.length);
-//        System.arraycopy(t, 0, e, 0, t.length);
-//        System.arraycopy(t, 0, f, 0, t.length);
-//
-//        dubble(a);
-//        insertionSort(b);
-//        insertionSort2(c);
-//        shellSort(d);
-//        mergeSort(e);
-//        quickSort(f);
-        heapSort(a);
+//        int[] a = {4, 6, 2, 53, 43, 2, 354
+////        , 34637, 1, 2, 34, 436, 567, 8, 8, 789};
+        int[] t = getArray(100000);
+        int[] a = new int[100000];
+        int[] b = new int[100000];
+        int[] c = new int[100000];
+        int[] d = new int[100000];
+        int[] e = new int[100000];
+        int[] f = new int[100000];
+        int[] g = new int[100000];
+        System.arraycopy(t, 0, a, 0, t.length);
+        System.arraycopy(t, 0, b, 0, t.length);
+        System.arraycopy(t, 0, c, 0, t.length);
+        System.arraycopy(t, 0, d, 0, t.length);
+        System.arraycopy(t, 0, e, 0, t.length);
+        System.arraycopy(t, 0, f, 0, t.length);
+        System.arraycopy(t, 0, g, 0, t.length);
+
+        dubble(a);
+        insertionSort(b);
+        insertionSort2(c);
+        shellSort(d);
+        mergeSort(e);
+        quickSort(f);
+        heapSort(g);
     }
 
 }
