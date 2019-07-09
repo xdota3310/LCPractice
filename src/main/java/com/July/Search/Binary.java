@@ -10,43 +10,102 @@ import java.text.DecimalFormat;
  */
 public class Binary {
 
+    public int searchInsert(int[] nums, int target) {
+        int length = nums.length;
+        int start = 0;
+        int end = length - 1;
+        while(start <= end) {
+            int mid = ((end - start) >> 1) + start;
+            if(nums[mid] == target) {
+                return mid;
+            } else if(start + 1 == end) {
+                return end;
+            } else if(target < nums[mid]) {
+                end = mid;
+            } else if(target > nums[mid]) {
+                start = mid;
+            }
+
+        }
+        return 0;
+    }
+
+    private static void insert(int[] nums, int target, int value) {
+        for(int i = nums.length - 1; i >= target; i--) {
+            nums[i + 1] = nums[i];
+        }
+        nums[target] = value;
+    }
+
+
+    /**
+     * 34. 在排序数组中查找元素的第一个和最后一个位置
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int[] searchRange(int[] nums, int target) {
+        int length = nums.length;
+        if(length <= 0 || target < nums[0] || target > nums[length - 1]) {
+            return new int[]{-1, -1};
+        }
+        int start = 0, end = length - 1;
+        int[] res = new int[2];
+        while(start <= end) {
+            int mid = ((end - start) >> 1) + start;
+            if(target < nums[mid]) {
+                end = mid-1;
+            } else if(target > nums[mid]) {
+                start = mid+1;
+            }else {
+
+            }
+        }
+    }
+
     /**
      * 查找第一个值等于给定值的元素
+     *
      * @param a
      * @param n
      * @return
      */
-    public static int pra1(int[] a,int n){
+    public static int pra1(int[] a, int n) {
+
         return 0;
     }
 
     /**
      * 查找最后一个值等于给定值的元素
+     *
      * @param a
      * @param n
      * @return
      */
-    public static int pra2(int[] a,int n){
+    public static int pra2(int[] a, int n) {
         return 0;
     }
 
     /**
      * 查找第一大于等于给定值的元素
+     *
      * @param a
      * @param n
      * @return
      */
-    public static int pra3(int[] a,int n){
+    public static int pra3(int[] a, int n) {
         return 0;
     }
 
     /**
      * 查找最后一个值小于等于给定值的元素
+     *
      * @param a
      * @param n
      * @return
      */
-    public static int pra4(int[] a,int n){
+    public static int pra4(int[] a, int n) {
         return 0;
     }
 
@@ -103,7 +162,7 @@ public class Binary {
         String t = d.toString();
         int index = t.indexOf(".");
 
-        if(t.substring(index,t.length()).length() >= n){
+        if(t.substring(index, t.length()).length() >= n) {
             return true;
         }
         return false;
@@ -111,6 +170,7 @@ public class Binary {
 
     /**
      * leetcode 69
+     *
      * @param x
      * @return
      */
