@@ -1,5 +1,7 @@
 package com.July.Search;
 
+import com.sun.xml.internal.ws.commons.xmlutil.Converter;
+
 import java.text.DecimalFormat;
 
 /**
@@ -45,23 +47,31 @@ public class Binary {
      * @param target
      * @return
      */
-    public int[] searchRange(int[] nums, int target) {
+    public static int[] searchRange(int[] nums, int target) {
         int length = nums.length;
         if(length <= 0 || target < nums[0] || target > nums[length - 1]) {
             return new int[]{-1, -1};
         }
         int start = 0, end = length - 1;
+
         int[] res = new int[2];
         while(start <= end) {
             int mid = ((end - start) >> 1) + start;
             if(target < nums[mid]) {
-                end = mid-1;
+                end = mid - 1;
             } else if(target > nums[mid]) {
-                start = mid+1;
-            }else {
-
+                start = mid + 1;
+            } else {
+                if(mid == 0 || nums[mid - 1] != target) {
+                    res[0] = mid;
+                    break;
+                } else {
+                    end = mid - 1;
+                }
             }
+
         }
+        return res;
     }
 
     /**
@@ -95,7 +105,26 @@ public class Binary {
      * @return
      */
     public static int pra3(int[] a, int n) {
-        return 0;
+        int length = a.length;
+        int start = 0;
+        int end = length - 1;
+        int mid;
+        if(length <= 0 || n > a[end]) {
+            return -1;
+        }
+        while(start <= end) {
+            mid = ((end - start) >> 1) + start;
+            if(n <= a[mid]) {
+                if(mid == 0 || a[mid - 1] < n) {
+                    return mid;
+                }
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+
+        }
+        return -1;
     }
 
     /**
@@ -107,6 +136,51 @@ public class Binary {
      */
     public static int pra4(int[] a, int n) {
         return 0;
+    }
+
+    /**
+     * 33. 搜索旋转排序数组
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int search33(int[] nums, int target) {
+        int length = nums.length;
+        int start = 0;
+        int end = length - 1;
+        int mid = ((end - start) >> 1) + start;
+        if(length <= 0) {
+            return -1;
+        }
+        while(start <= end) {
+            if(nums[mid] <= nums[end]) {
+                if(target >= nums[mid] && target <= nums[end]) {
+                    return binarySort(nums, mid, end, target);
+                }
+                end = mid - 1;
+            } else {
+                if(target >= nums[start] && target <= nums[mid]) {
+                    return binarySort(nums, start, mid, target);
+                }
+                start = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+    private static int binarySort(int[] a, int start, int end, int target) {
+        while(start <= end) {
+            int mid = ((end - start) >> 1) + start;
+            if(a[mid] == target) {
+                return mid;
+            } else if(target < a[mid]) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        }
+        return -1;
     }
 
 
@@ -209,6 +283,7 @@ public class Binary {
         Double a = 646413.46486513456500000000;
         String b = a.toString();
         System.out.println(b);
+
     }
 
 }
