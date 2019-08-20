@@ -4,6 +4,7 @@ package com.July.P2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.TreeSet;
 
 /**
  * 请填写类注释
@@ -45,9 +46,19 @@ public class P1 {
     }
 
     public static void main(String[] args) {
-        int[] a = new int[100];
-        System.out.println(a.length);
-        list1();
-        list2();
+//        int[] a = new int[100];
+//        System.out.println(a.length);
+//        list1();
+//        list2();
+        TreeSet<Integer> set = new TreeSet<Integer>();
+        TreeSet<Integer> subSet = new TreeSet<Integer>();
+        for(int i=606;i<613;i++){
+            if(i%2==0){
+                set.add(i);
+            }
+        }
+        subSet = (TreeSet)set.subSet(608,true,611,true);
+        set.add(629);
+        System.out.println(set+" "+subSet);
     }
 }
