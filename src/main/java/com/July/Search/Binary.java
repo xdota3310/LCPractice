@@ -62,6 +62,7 @@ public class Binary {
 
             }
         }
+        return null;
     }
 
     /**
