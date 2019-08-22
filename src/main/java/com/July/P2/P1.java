@@ -14,35 +14,34 @@ import java.util.TreeSet;
  */
 public class P1 {
 
-
     @Override
     public String toString() {
-        return getClass().getName()+"{name: one}";
+        return getClass().getName() + "{name: one}";
     }
 
-    public static void get(Object obj){
+    public static void get(Object obj) {
         System.out.println(obj.toString());
     }
 
-    public static void list1(){
+    public static void list1() {
         Long start = System.currentTimeMillis();
-        List<Integer> list =new ArrayList<>();
-        for(int i=0;i<10000000;i++){
+        List<Integer> list = new ArrayList<>();
+        for(int i = 0; i < 10000000; i++) {
             list.add(i);
         }
         Long end = System.currentTimeMillis();
-        System.out.println(end - start+"["+list.size()+"]");
+        System.out.println(end - start + "[" + list.size() + "]");
     }
 
-    public static void list2(){
+    public static void list2() {
         Long start = System.currentTimeMillis();
-        List<Integer> list =new ArrayList<>(100000000);
-        for(int i=0;i<10000000;i++){
+        List<Integer> list = new ArrayList<>(100000000);
+        for(int i = 0; i < 10000000; i++) {
             list.add(i);
         }
         ((ArrayList<Integer>) list).trimToSize();
         Long end = System.currentTimeMillis();
-        System.out.println(end - start+"["+list.size()+"]");
+        System.out.println(end - start + "[" + list.size() + "]");
     }
 
     public static void main(String[] args) {
