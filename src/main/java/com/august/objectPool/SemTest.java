@@ -16,4 +16,9 @@ public class SemTest {
     public void add(int n) {
         System.out.println(n + base);
     }
+
+
+    public int getBase() {
+        return base;
+    }
 }

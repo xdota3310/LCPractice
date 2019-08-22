@@ -13,15 +13,6 @@ public class BlockedQTest2 {
         BlockedQ<Integer> blockedQ = BlockedQ.getIns();
         System.out.println(blockedQ);
         ExecutorService executorService = Executors.newCachedThreadPool();
-        Future<Integer> t1 = executorService.submit(new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                for(int i=0;i<20;i++){
-                    blockedQ.doPush(i);
-                }
-                return null;
-            }
-        });
-        t1.get();
+
     }
 }

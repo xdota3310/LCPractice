@@ -43,39 +43,37 @@ public class BlockedQ<T> {
     }
 
     public void doPush(T num) {
-        if(lock.tryLock()) {
-            try {
-                while(queue.size() >= size) {
-                    System.out.println(Thread.currentThread().getName() + ": no available space waiting!");
-                    notFull.await();
-                }
-                queue.add(num);
-                System.out.println(Thread.currentThread().getName() + " push:" + num);
-                notEmpty.signalAll();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
+        lock.lock();
+        try {
+            while(queue.size() >= size) {
+                System.out.println(Thread.currentThread().getName() + ": no available space waiting!");
+                notFull.await();
             }
+            queue.add(num);
+            System.out.println(Thread.currentThread().getName() + " push:" + num);
+            notEmpty.signalAll();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
         }
     }
 
     public T doPoll() {
         T res = null;
-        if(lock.tryLock()) {
-            try {
-                while(queue.isEmpty()) {
-                    System.out.println(Thread.currentThread().getName() + ": no data waiting!");
-                    notEmpty.await();
-                }
-                res = queue.poll();
-                System.out.println(Thread.currentThread().getName() + " poll:" + res);
-                notFull.signalAll();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
+        lock.lock();
+        try {
+            while(queue.isEmpty()) {
+                System.out.println(Thread.currentThread().getName() + ": no data waiting!");
+                notEmpty.await();
             }
+            res = queue.poll();
+            System.out.println(Thread.currentThread().getName() + " poll:" + res);
+            notFull.signalAll();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
         }
         return res;
     }
@@ -83,28 +81,30 @@ public class BlockedQ<T> {
     public T doPoll(long millis) {
         T res = null;
         long start = System.currentTimeMillis();
-        if(lock.tryLock()) {
-            try {
-                while(queue.isEmpty()) {
-                    System.out.println(Thread.currentThread().getName() + ": no data waiting!");
-                    notEmpty.await(millis, TimeUnit.MILLISECONDS);
-                    long cur = System.currentTimeMillis();
-                    if(!queue.isEmpty() || cur - start > millis) {
-                        break;
-                    }
+//        if(lock.tryLock()) {
+        lock.lock();
+        try {
+            while(queue.isEmpty()) {
+                System.out.println(Thread.currentThread().getName() + ": no data waiting!");
+                notEmpty.await(millis, TimeUnit.MILLISECONDS);
+                long cur = System.currentTimeMillis();
+                if(!queue.isEmpty() || cur - start > millis) {
+                    break;
                 }
-                if(queue.isEmpty()) {
-                    return res;
-                }
-                res = queue.poll();
-                System.out.println(Thread.currentThread().getName() + " poll:" + res);
-                notFull.signalAll();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
             }
+            if(queue.isEmpty()) {
+                System.out.println(Thread.currentThread().getName() + ": timeout!");
+                return res;
+            }
+            res = queue.poll();
+            System.out.println(Thread.currentThread().getName() + " poll:" + res);
+            notFull.signalAll();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
         }
+//        }
         return res;
     }
 }

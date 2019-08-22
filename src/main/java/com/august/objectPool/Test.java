@@ -11,10 +11,12 @@ public class Test {
         SemTest semTest = new SemTest(5);
         ObjectPool objectPool = new ObjectPool(1, semTest);
 
-        SemTest st = (SemTest) objectPool.execute(tt -> {
-            System.out.println("1:" + tt.toString());
-            return tt;
+        objectPool.execute(tt -> {
+            SemTest st = (SemTest)tt;
+            st.add(1);
+            System.out.println("1:" + tt);
+            return st.getBase();
         });
-        st.add(1);
+
     }
 }
