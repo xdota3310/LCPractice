@@ -61,14 +61,14 @@ public class BlockedQTest {
                 return null;
             }
         });
-//        Future<Integer> t4 = executorService.submit(new Callable<Integer>() {
+//        Futureff<Integer> t4 = executorService.submit(new Callable<Integer>() {
 //            @Override
 //            public Integer call() throws Exception {
 //                blockedQ.doPoll(11000);
 //                return null;
 //            }
 //        });
-//        Future<Integer> t5 = executorService.submit(new Callable<Integer>() {
+//        Futureff<Integer> t5 = executorService.submit(new Callable<Integer>() {
 //            @Override
 //            public Integer call() throws Exception {
 //                blockedQ.doPoll(12000);
