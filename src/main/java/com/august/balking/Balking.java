@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Balking模式本质上是一种规范化地解决“多线程版本的if”的方案，使用
@@ -25,19 +26,19 @@ public class Balking {
             if(!change) {
                 return;
             }
-            System.out.println("autodo");
+            System.out.println(Thread.currentThread().getName() + ": autodo");
             change = false;
         }
         this.todo();
     }
 
     void todo() {
-        System.out.println("todo");
+        System.out.println(Thread.currentThread().getName() + ": todo");
     }
 
     void edit() {
         //dosomething
-        System.out.println("doSomething");
+        System.out.println(Thread.currentThread().getName() + ": doSomething");
         this.change();
     }
 
@@ -45,20 +46,24 @@ public class Balking {
         synchronized(this) {
             change = true;
         }
-        System.out.println("change");
+        System.out.println(Thread.currentThread().getName() + ": change");
     }
 
     public static void main(String[] args) {
         Balking balking = new Balking();
         ThreadGroup threadGroup = new ThreadGroup("balkingThreadGroupTest!");
-        ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(3, r -> new Thread(threadGroup, r, "balkingTest!"));
+        AtomicInteger i = new AtomicInteger();
+        ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(3, r -> {
+            String name = "balkingTest!";
+            return new Thread(threadGroup, r, name + "-" + i.incrementAndGet());
+        });
         executorService.scheduleWithFixedDelay(() -> {
-            System.out.println("time to auto：" + new Date());
+            System.out.println(Thread.currentThread().getName() + ": time to auto：" + new Date());
             balking.autodo();
         }, 1, 3, TimeUnit.SECONDS);
 
         executorService.schedule(balking::edit, 10, TimeUnit.SECONDS);
+        executorService.execute(() -> System.out.println(Thread.currentThread().getName()));
+        System.out.println(Thread.currentThread().getName() + ": 1231");
     }
-
-
 }
