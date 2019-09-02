@@ -1,4 +1,4 @@
-package com.sem.netty;
+package com.September.netty;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

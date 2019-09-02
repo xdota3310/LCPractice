@@ -1,4 +1,4 @@
-package com.sem.netty;
+package com.September.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
