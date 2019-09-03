@@ -1,5 +1,11 @@
 package com.September.disruptor;
 
+import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.dsl.Disruptor;
+import com.lmax.disruptor.util.DaemonThreadFactory;
+
+import java.nio.ByteBuffer;
+
 /**
  * 高性能队列Disruptor
  *
@@ -13,5 +19,42 @@ package com.September.disruptor;
  * @since 2019年09月02日
  */
 public class DisruptorDemo {
+    class LongEvent {
+        private long value;
+
+        public void setValue(long value) {
+            this.value = value;
+        }
+
+    }
+
+    int bufferSize = 1024;
+
+    Disruptor<LongEvent> disruptor = new Disruptor<LongEvent>(LongEvent::new, bufferSize, DaemonThreadFactory.INSTANCE);
+
+    public void init() {
+//        注册事件处理器
+        disruptor.handleEventsWith((event, sequence, endOfBatch) -> System.out.println("E: " + event.value));
+//        启动
+        disruptor.start();
+//        获取RingBuffer
+        RingBuffer<LongEvent> ringBuffer = disruptor.getRingBuffer();
+//        生成Event
+        ByteBuffer bb = ByteBuffer.allocate(8);
+        for(long l = 0; true; l++) {
+            bb.putLong(0, l);
+            ringBuffer.publishEvent((event, sequence, arg0) -> event.setValue(arg0.getLong(0)), bb);
+            try {
+                Thread.sleep(1000);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        new DisruptorDemo().init();
+    }
+
 
 }
