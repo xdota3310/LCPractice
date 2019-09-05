@@ -17,32 +17,24 @@ package com.company.P2018_11_21;
 public class LinkedList1 {
 
     public static ListNode re1(ListNode head) {
-        int flag = 1;
-        ListNode p;
-        ListNode q;
-        ListNode head1 = new ListNode(-1);
-
-        while(head != null && head.next != null) {
-            p = head;
-            q = head.next;
-            while(q.next != null) {
-                p = q;
-                q = q.next;
-            }
-            if(flag == 1) {
-                head1 = q;
-            }
-            p.next = null;
-
-            q.next = p;
-
-            flag++;
-        }
-        if(flag == 1) {
-            return head;
+        ListNode res = null;
+        if(head == null) {
+            return null;
         } else {
-            return head1;
+            res = head;
+            head = head.next;
+            res.next = null;
         }
+
+        while(head != null) {
+            ListNode p = head;
+            head = head.next;
+            p.next = res;
+            res = p;
+
+        }
+
+        return res;
     }
 
     public static ListNode re2(ListNode head) {
@@ -107,9 +99,9 @@ public class LinkedList1 {
 
 //        print(re2(head11));
 
-//        print(re1(head11));
+        print(re1(head11));
 //        print(re2(head11));
-        print(re3(head11));
+//        print(re3(head11));
 
 
     }
