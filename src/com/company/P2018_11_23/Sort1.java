@@ -1,6 +1,7 @@
 package com.company.P2018_11_23;
 
 import com.sun.istack.internal.NotNull;
+import sun.reflect.generics.tree.VoidDescriptor;
 
 import java.util.Random;
 
@@ -19,6 +20,7 @@ public class Sort1 {
      * 冒泡排序
      * 原地、稳定
      * 时间O(n^2) 空间O(1)
+     *
      * @param a
      */
     public static void dubble(int a[]) {
@@ -77,6 +79,7 @@ public class Sort1 {
      * 插入排序
      * 稳定、原地
      * 时间O(n^2)、空间O(1)
+     *
      * @param a
      */
     public static void insertionSort2(int[] a) {
@@ -107,6 +110,7 @@ public class Sort1 {
      * 希尔排序
      * 不稳定、原地
      * 时间平均O(n(logn)^2)
+     *
      * @param array
      */
     public static void shellSort(int[] array) {
@@ -158,15 +162,27 @@ public class Sort1 {
 
     /**
      * 归并排序
-     *稳、非原地
+     * 稳、非原地
      * 时间O(nlogn)、空间O(n)
+     *
      * @param a
      */
     public static void mergeSort(@NotNull int[] a) {
         int length = a.length;
-
+        int[] res = new int[length];
+        recursiveMergeSort(a, res, 0, length - 1);
     }
 
+
+    private static void recursiveMergeSort(int[] a, int[] res, int start, int end) {
+        if(start<=end){
+            return;
+        }
+        int mid = ((end - start) >> 1) + start;
+        recursiveMergeSort(a, res, start, mid);
+        recursiveMergeSort(a, res, mid + 1, end);
+
+    }
 
     private static void print(int[] t) {
 //        for(int tt : t) {
