@@ -22,10 +22,6 @@ public class ReverseList {
      */
     public ListNode reverseList(ListNode head) {
         ListNode res = null;
-        if(head == null) {
-            return null;
-        }
-
         while(head != null) {
             ListNode p = head;
             head = head.next;
