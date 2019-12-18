@@ -12,6 +12,7 @@ public class CountT {
     public static void main(String[] args) throws InterruptedException {
         CountDownLatch cl = new CountDownLatch(2);
         ExecutorService es = Executors.newFixedThreadPool(2);
+
         Future<String> f = es.submit(new Callable<String>() {
             @Override
             public String call() throws Exception {

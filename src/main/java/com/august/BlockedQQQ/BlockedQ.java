@@ -42,6 +42,14 @@ public class BlockedQ<T> {
         return blockedQ;
     }
 
+//    private static class BlockedQInst{
+//        private static BlockedQ ins = new BlockedQ();
+//    }
+//
+//    static <T> BlockedQ<T> getInst(int size) {
+//
+//    }
+
     public void doPush(T num) {
         lock.lock();
         try {

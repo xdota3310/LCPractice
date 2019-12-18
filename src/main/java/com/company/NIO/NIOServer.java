@@ -10,7 +10,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
 /**
- * NIO 服务器
+ * nio 服务器
  *
  * @author shijie.xu
  * @since 2019年03月06日

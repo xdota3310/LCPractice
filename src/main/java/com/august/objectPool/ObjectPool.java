@@ -16,8 +16,7 @@ public class ObjectPool<T, R> {
     private final Semaphore sem;
 
     ObjectPool(int size, T t) {
-        pool = new Vector<T>() {
-        };
+        pool = new Vector<T>() {};
         for(int i = 0; i < size; i++) {
             pool.add(t);
         }
