@@ -1,13 +1,23 @@
 package com.interview.jianzhiOffer;
 
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 /**
  * 请填写类注释
  *
  * @author shijie.xu
- * @since 2019年12月08日
  */
 public class T20 {
+
+
+
     public static void main(String[] args) {
-        int a = Integer.valueOf("3a54df3as");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date date = new Date();
+        System.out.println(simpleDateFormat.format(date));
+        System.out.println(date.toString());
+        System.out.println(date.getTime());
+
     }
 }

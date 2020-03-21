@@ -36,5 +36,22 @@
             <version>3.4.2</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/net.sourceforge.htmlunit/htmlunit -->
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.36.0</version>
+        </dependency>
+
+
+
+
+        <dependency>
+            <groupId>com.lr</groupId>
+            <artifactId>sjsite-common</artifactId>
+            <version>1.0.2019</version>
+        </dependency>
+
+
     </dependencies>
 </project>
