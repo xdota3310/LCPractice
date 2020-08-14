@@ -10,7 +10,7 @@ public class SafepointTest {
     static double sum = 0;
 
     public static void foo() {
-        for(int i = 0; i < 0x77777777; i++) {
+        for(int i = 0; i < 0x7777_7777; i++) {
             sum += Math.sqrt(i);
         }
     }

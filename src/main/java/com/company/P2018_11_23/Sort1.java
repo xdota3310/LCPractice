@@ -1,7 +1,5 @@
 package com.company.P2018_11_23;
 
-import com.sun.istack.internal.NotNull;
-import sun.reflect.generics.tree.VoidDescriptor;
 
 import java.util.Random;
 
@@ -232,7 +230,7 @@ public class Sort1 {
      *
      * @param a
      */
-    public static void mergeSort(@NotNull int[] a) {
+    public static void mergeSort( int[] a) {
         Long start = System.currentTimeMillis();
         int length = a.length;
         int[] res = new int[length];

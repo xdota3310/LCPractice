@@ -1,7 +1,5 @@
 package com.company.P2018_11_23;
 
-import sun.security.provider.MD2;
-
 /**
  * 请填写类注释
  *
