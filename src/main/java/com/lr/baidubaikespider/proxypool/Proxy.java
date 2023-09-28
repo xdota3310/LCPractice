@@ -1,4 +1,4 @@
-package com.baidubaikespider.proxypool;
+package com.lr.baidubaikespider.proxypool;
 
 /**
  */
